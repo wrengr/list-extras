@@ -4,7 +4,7 @@
 ----------------------------------------------------------------
 --                                                  ~ 2008.07.11
 -- |
--- Module      :  Data.List.Pair
+-- Module      :  Data.List.Extras.Pair
 -- Copyright   :  Copyright (c) 2007--2008 wren ng thornton
 -- License     :  BSD3
 -- Maintainer  :  wren@cpan.org
@@ -20,9 +20,31 @@ module Data.List.Extras.Pair
     -- * Safe functions for zipping lists
       pairWithBy, pairWith, pairBy, pair
     
-    -- * Special zipping functions
+    -- * Special safe zipping functions
     , biject, biject'
+    
+    -- * New (unsafe) zipping functions
+    , zipWithBy, zipBy
     ) where
+
+
+----------------------------------------------------------------
+----------------------------------------------------------------
+-- | An unsafe variant of 'pairWithBy' to fill out the interface.
+zipWithBy :: (a -> b -> c)       -- tuple homomorphism
+          -> (c -> d -> d) -> d  -- list  homomorphism
+          -> [a] -> [b] -> d     -- a @zip@ function
+
+zipWithBy k f z xs' ys' = zipWB xs' ys' id
+    where
+    zipWB (x:xs) (y:ys) cc = zipWB xs ys (cc . f (k x y))
+    zipWB _      _      cc = cc z
+
+
+-- | A version of 'zip' that uses a user-defined list homomorphism.
+zipBy :: ((a,b) -> m (a,b) -> m (a,b)) -> m (a,b)
+      -> [a] -> [b] -> m (a,b)
+zipBy  = zipWithBy (,)
 
 
 ----------------------------------------------------------------
@@ -43,9 +65,10 @@ module Data.List.Extras.Pair
 -- elements return in 1~2 seconds, but lists of 10 million can lock
 -- your system up).
 
-pairWithBy :: (a -> b -> c)          -- tuple homomorphism
-           -> (c -> d -> d) -> d     -- list  homomorphism
-           -> [a] -> [b] -> Maybe d  -- a safer `zip`
+pairWithBy :: (a -> b -> c)          -- @(,)@ tuple homomorphism
+           -> (c -> d -> d)          -- @(:)@ list  homomorphism, pt. 1
+           -> d                      -- @[]@  list  homomorphism, pt. 2
+           -> [a] -> [b] -> Maybe d  -- a safer @zip@ function
 
 pairWithBy k f z xs' ys' = pairWB xs' ys' id
     where
