@@ -3,7 +3,7 @@
 ----------------------------------------------------------------
 
 Name:           list-extras
-Version:        0.1.0
+Version:        0.1.1
 Cabal-Version:  >= 1.2
 Build-Type:     Simple
 Stability:      stable
@@ -12,9 +12,12 @@ License:        BSD3
 License-File:   LICENSE
 Author:         wren ng thornton
 Maintainer:     wren@cpan.org
+Homepage:       http://code.haskell.org/~wren/
 Category:       List
 Synopsis:       Common not-so-common functions for lists
-Description:    Since "Data.List.Extras" is prime realestate for
+Description:    Common not-so-common functions for lists.
+                .
+                Since "Data.List.Extras" is prime realestate for
                 extensions to "Data.List", if you have something
                 you'd like to contribute feel free to contact the
                 maintainer (I'm friendly). I'm amenable to adopting
@@ -30,7 +33,6 @@ Library
                    , Data.List.Extras.LazyLength
                    , Data.List.Extras.Pair
     Build-Depends:   base
-    Ghc-Options:     -Wall -Werror
 
 ----------------------------------------------------------------
 ----------------------------------------------------------- fin.
