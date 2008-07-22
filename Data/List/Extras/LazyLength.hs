@@ -32,6 +32,9 @@
 -- and would wreck the cache and burn heap. This module provides
 -- functions with the same lazy effect as if we used Peano integers,
 -- but does so efficiently instead.
+--
+-- (For Peano integers see {numbers}"Data.Number.Natural" or
+-- {non-negative}"Numeric.NonNegative.Class".)
 ----------------------------------------------------------------
 
 module Data.List.Extras.LazyLength
