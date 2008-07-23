@@ -7,7 +7,7 @@
 -- Module      :  Data.List.Extras.ArgMax
 -- Copyright   :  Copyright (c) 2007--2008 wren ng thornton
 -- License     :  BSD3
--- Maintainer  :  wren@cpan.org
+-- Maintainer  :  wren@community.haskell.org
 -- Stability   :  experimental
 -- Portability :  portable
 --
