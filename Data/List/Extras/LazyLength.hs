@@ -2,7 +2,7 @@
 {-# OPTIONS_GHC -Wall -Werror #-}
 
 ----------------------------------------------------------------
---                                                  ~ 2008.07.20
+--                                                  ~ 2008.07.25
 -- |
 -- Module      :  Data.List.Extras.LazyLength
 -- Copyright   :  Copyright (c) 2007--2008 wren ng thornton
@@ -33,13 +33,12 @@
 -- functions with the same lazy effect as if we used Peano integers,
 -- but does so efficiently instead.
 --
--- (For Peano integers see {numbers}"Data.Number.Natural" or
--- {non-negative}"Numeric.NonNegative.Class".)
+-- (For Peano integers see numbers:"Data.Number.Natural" or
+-- non-negative:"Numeric.NonNegative.Class".)
 ----------------------------------------------------------------
 
 module Data.List.Extras.LazyLength
-    ( lengthBound, negateOrdering
-    , lengthCompare
+    ( lengthBound, lengthCompare
     ) where
 
 
@@ -68,14 +67,6 @@ lengthBound n cmp xs
     go 0  (_:_)   = cmp 0  1
     go n' (_:xs') = (go $! n'-1) xs'
 
-
--- | Flips 'LT' and 'GT'. Used by 'lengthBound' in rewrite rules.
-negateOrdering   :: Ordering -> Ordering
-negateOrdering LT = GT
-negateOrdering EQ = EQ
-negateOrdering GT = LT
-
-
 {-# RULES
 
 "lengthBound/(>)"      forall n xs. n >  length xs = lengthBound n (>)  xs
@@ -94,7 +85,7 @@ negateOrdering GT = LT
 "lengthBound\\(<=)"    forall n xs. length xs <= n = lengthBound n (>=) xs
 "lengthBound\\(<)"     forall n xs. length xs <  n = lengthBound n (>)  xs
 "lengthBound\\compare" forall n xs.
-          compare (length xs) n = negateOrdering (lengthBound n compare xs)
+                   compare (length xs) n = lengthBound n (flip compare) xs
     #-}
 
 
