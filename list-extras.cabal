@@ -1,9 +1,9 @@
 ----------------------------------------------------------------
--- wren ng thornton <wren@cpan.org>                 ~ 2008.07.20
+-- wren ng thornton <wren@cpan.org>                 ~ 2008.07.25
 ----------------------------------------------------------------
 
 Name:           list-extras
-Version:        0.1.1
+Version:        0.2.0
 Cabal-Version:  >= 1.2
 Build-Type:     Simple
 Stability:      stable
@@ -29,7 +29,7 @@ Description:    Common not-so-common functions for lists.
 Library
     Exposed-Modules: Prelude.Listless
                    , Data.List.Extras
-                   , Data.List.Extras.ArgMax
+                   , Data.List.Extras.Argmax
                    , Data.List.Extras.LazyLength
                    , Data.List.Extras.Pair
     Build-Depends:   base

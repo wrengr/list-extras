@@ -1,8 +1,8 @@
 
-{-# OPTIONS_GHC -Wall -Werror -fno-warn-unused-binds #-}
+{-# OPTIONS_GHC -Wall -Werror #-}
 
 ----------------------------------------------------------------
---                                                  ~ 2008.07.20
+--                                                  ~ 2008.07.25
 -- |
 -- Module      :  Data.List.Extras.ArgMax
 -- Copyright   :  Copyright (c) 2007--2008 wren ng thornton
@@ -12,148 +12,180 @@
 -- Portability :  portable
 --
 -- This module provides variants of the 'maximum' and 'minimum'
--- functions which return the element for which some function is
+-- functions which return the elements for which some function is
 -- maximized or minimized.
 ----------------------------------------------------------------
 
-module Data.List.Extras.ArgMax
+module Data.List.Extras.Argmax
     (
-    -- * Maximum variations
-      argmax, argmax'
-    
-    -- * Minimum variations
-    , argmin, argmin'
+    -- * Utility functions
+      catchNull
     
     -- * Generic versions
-    , argmaxBy, argmaxBy'
+    , argmaxBy, argmaxesBy, argmaxWithMaxBy, argmaxesWithMaxBy
+    
+    -- * Maximum variations
+    , argmax,   argmaxes,   argmaxWithMax,   argmaxesWithMax
+    
+    -- * Minimum variations
+    , argmin,   argmins,    argminWithMin,   argminsWithMin
     
     {- TODO: CPS and monadic variants; argmax2, argmax3,... -}
-    {- TODO: make argmax et al "good consumers" for fusion -}
+    {- TODO: make sure argmax et al are "good consumers" for fusion -}
     ) where
 -- argmaxM       :: (Monad m, Ord b) => (a -> m b) -> [a] -> m (Maybe a)
 
+import Data.List (foldl')
 
 ----------------------------------------------------------------
 ----------------------------------------------------------------
 
--- CPS version... why bother making the list first?
-type CPSList a b = ((a -> b -> b) -> b -> b)
-
--- BUG: This doesn't tail recurse and so it will stack overflow!!!
-argmaxCPS       :: (Ord b) => (a -> b) -> CPSList a (Maybe (a,b)) -> Maybe a
-argmaxCPS f list = list k Nothing >>= Just . fst
-    where
-    k x Nothing    = Just (x, f x)
-    k x (Just yfy) = Just (mx x yfy)
-    
-    mx a (b,fb) = let  fa = f a in
-                  if   fa > fb
-                  then (a,fa)
-                  else (b,fb)
+-- | Apply a list function safely, i.e. when the list is non-empty.
+-- All other functions will throw errors on empty lists, so use
+-- this to make your own safe variations.
+catchNull           :: ([a] -> b) -> ([a] -> Maybe b)
+catchNull _ []       = Nothing
+catchNull f xs@(_:_) = Just (f xs)
 
 
-----------------------------------------------------------------
-----------------------------------------------------------------
--- Compared against a generic decorate-fold-undecorate implementation:
---     fst . foldr1 (\a b -> if snd a > snd b then a else b)
---         . map (\x -> (x, f x))
--- that seems to take 50% to 100% more space vs argmax'. Using
--- pattern matching instead of snd seems to improve it, but my tests
--- are a bit unclear.
-
+-- | Minimize the number of string literals
+{-# NOINLINE emptyListError #-}
 emptyListError    :: String -> a
 emptyListError fun = error $ "Data.List.Extras.ArgMax."++fun++": empty list"
 
 
+-- | Apply a list function unsafely. For internal use.
+{-# INLINE throwNull #-}
+throwNull :: String -> (a -> [a] -> b) -> ([a] -> b)
+throwNull fun _ []     = emptyListError fun
+throwNull _   f (x:xs) = f x xs
+
+----------------------------------------------------------------
+----------------------------------------------------------------
 -- | Tail-recursive driver
-_argmaxBy :: (b -> b -> Bool) -> (a -> b) -> [a] -> (a,b) -> a
-_argmaxBy isBetterThan f = go
+_argmaxWithMaxBy :: (b -> b -> Bool) -> (a -> b)
+                 -> a -> [a] -> (a,b)
+_argmaxWithMaxBy isBetterThan f x xs = foldl' cmp (x, f x) xs
     where
-    go []     (b,_)  = b
-    go (x:xs) (b,fb) = go xs $! cmp x (b,fb)
-    
-    cmp a (b,fb) = let  fa = f a in
-                   if   fa `isBetterThan` fb
-                   then (a,fa)
-                   else (b,fb)
+    cmp bfb@(_,fb) a =
+        let  fa = f a in
+        if   fa `isBetterThan` fb
+        then (a,fa)
+        else bfb
 
 
--- | Direct version of 'argmaxBy' which doesn't catch the empty
--- list error.
-argmaxBy' :: (b -> b -> Ordering) -> (a -> b) -> [a] -> a
-argmaxBy' _   _ []     = emptyListError "argmaxBy'"
-argmaxBy' ord f (x:xs) = _argmaxBy boolOrd f xs (x, f x)
+-- | Tail-recursive driver for all-variants
+_argmaxesWithMaxBy :: (b -> b -> Ordering) -> (a -> b)
+                   -> a -> [a] -> ([a],b)
+_argmaxesWithMaxBy isBetterEqualThan f x xs = foldl' cmp ([x], f x) xs
     where
-    boolOrd a b = GT == ord a b
+    cmp bsfb@(bs,fb) a =
+        let  fa = f a in
+        case isBetterEqualThan fa fb of
+             GT -> ([a],  fa)
+             EQ -> (a:bs, fb)
+             _  -> bsfb
+
+_argmaxBy         :: (b -> b -> Bool) -> (a -> b)
+                  -> a -> [a] -> a
+_argmaxBy k f x xs = fst (_argmaxWithMaxBy k f x xs)
 
 
--- | Returns the element of the list which maximizes a function
--- according to a user-defined ordering, or @Nothing@ if the list
--- was empty.
-argmaxBy :: (b -> b -> Ordering) -> (a -> b) -> [a] -> Maybe a
-argmaxBy _   _ []       = Nothing
-argmaxBy ord f xs@(_:_) = Just (argmaxBy' ord f xs)
-
+_argmaxesBy         :: (b -> b -> Ordering) -> (a -> b)
+                    -> a -> [a] -> [a]
+_argmaxesBy k f x xs = fst (_argmaxesWithMaxBy k f x xs)
 
 ----------------------------------------------------------------
--- The specialization pragma add about 21kB to the library size
--- (compared to 29kB base for list-extras). For a basic utility
--- library that's a bit excessive, though if we break the argmax
--- stuff out from list-extras then we might go through with it for
--- performance sake.
+----------------------------------------------------------------
 
--- | Direct version of 'argmax' which doesn't catch the empty list
--- error.
-{-
-{-# SPECIALIZE argmax' :: (a -> Int)     -> [a] -> a #-}
-{-# SPECIALIZE argmax' :: (a -> Integer) -> [a] -> a #-}
-{-# SPECIALIZE argmax' :: (a -> Float)   -> [a] -> a #-}
-{-# SPECIALIZE argmax' :: (a -> Double)  -> [a] -> a #-}
--}
-argmax'                :: (Ord b) => (a -> b) -> [a] -> a
-argmax' _ []     = emptyListError "argmax'"
-argmax' f (x:xs) = _argmaxBy (>) f xs (x, f x)
+bool    :: (a -> a -> Ordering) -> (a -> a -> Bool)
+bool ord = \a b -> ord a b == GT
 
 
--- | Returns the element of the list which maximizes the function,
--- or @Nothing@ if the list was empty.
-{-
-{-# SPECIALIZE argmax :: (a -> Int)     -> [a] -> Maybe a #-}
-{-# SPECIALIZE argmax :: (a -> Integer) -> [a] -> Maybe a #-}
-{-# SPECIALIZE argmax :: (a -> Float)   -> [a] -> Maybe a #-}
-{-# SPECIALIZE argmax :: (a -> Double)  -> [a] -> Maybe a #-}
--}
-argmax                :: (Ord b) => (a -> b) -> [a] -> Maybe a
-argmax _ []       = Nothing
-argmax f xs@(_:_) = Just (argmax' f xs)
+-- | Return an element of the list which maximizes the function
+-- according to a user-defined ordering.
+argmaxBy        :: (b -> b -> Ordering) -> (a -> b) -> [a] -> a
+argmaxBy   ord f = throwNull "argmaxBy"
+                 $ _argmaxBy (bool ord) f
 
+
+-- | Return all elements of the list which maximize the function
+-- according to a user-defined ordering.
+argmaxesBy      :: (b -> b -> Ordering) -> (a -> b) -> [a] -> [a]
+argmaxesBy ord f = throwNull "argmaxesBy"
+                 $ _argmaxesBy ord f
+
+
+-- | Return an element of the list which maximizes the function
+-- according to a user-defined ordering, and return the value of
+-- the function at that element as well.
+argmaxWithMaxBy        :: (b -> b -> Ordering) -> (a -> b) -> [a] -> (a, b)
+argmaxWithMaxBy   ord f = throwNull "argmaxWithMaxBy" 
+                        $ _argmaxWithMaxBy (bool ord) f
+
+
+-- | Return all elements of the list which maximize the function
+-- according to a user-defined ordering, and return the value of
+-- the function at those elements as well.
+argmaxesWithMaxBy      :: (b -> b -> Ordering) -> (a -> b) -> [a] -> ([a], b)
+argmaxesWithMaxBy ord f = throwNull "argmaxesWithMaxBy"
+                        $ _argmaxesWithMaxBy ord f
+
+----------------------------------------------------------------
+-- SPECIALIZE on b \in {Int,Integer,Float,Double} for the four
+-- functions below nearly doubles the library size (about +21kB).
+-- For a basic utility library that's a bit excessive, though if
+-- we break the argmax stuff out from list-extras then we might go
+-- through with it for performance sake.
+
+-- | Return an element of the list which maximizes the function.
+argmax    :: (Ord b) => (a -> b) -> [a] -> a
+argmax   f = throwNull "argmax"
+           $ _argmaxBy (>) f
+
+-- | Return all elements of the list which maximize the function.
+argmaxes  :: (Ord b) => (a -> b) -> [a] -> [a]
+argmaxes f = throwNull "argmaxes"
+           $ _argmaxesBy compare f
+
+
+-- | Return an element of the list which maximizes the function,
+-- and return the value of the function at that element as well.
+argmaxWithMax    :: (Ord b) => (a -> b) -> [a] -> (a, b)
+argmaxWithMax   f = throwNull "argmaxWithMax" 
+                  $ _argmaxWithMaxBy (>) f
+
+
+-- | Return all elements of the list which maximize the function,
+-- and return the value of the function at those elements as well.
+argmaxesWithMax  :: (Ord b) => (a -> b) -> [a] -> ([a], b)
+argmaxesWithMax f = throwNull "argmaxesWithMax"
+                  $ _argmaxesWithMaxBy compare f
 
 ----------------------------------------------------------------
 
--- | Direct version of 'argmin' which doesn't catch the empty list
--- error.
-{-
-{-# SPECIALIZE argmin' :: (a -> Int)     -> [a] -> a #-}
-{-# SPECIALIZE argmin' :: (a -> Integer) -> [a] -> a #-}
-{-# SPECIALIZE argmin' :: (a -> Float)   -> [a] -> a #-}
-{-# SPECIALIZE argmin' :: (a -> Double)  -> [a] -> a #-}
--}
-argmin'                :: (Ord b) => (a -> b) -> [a] -> a
-argmin' _ []     = emptyListError "argmin'"
-argmin' f (x:xs) = _argmaxBy (<) f xs (x, f x)
+-- | Return an element of the list which minimizes the function.
+argmin   :: (Ord b) => (a -> b) -> [a] -> a
+argmin  f = throwNull "argmax"
+          $ _argmaxBy (<) f
+
+-- | Return all elements of the list which minimize the function.
+argmins  :: (Ord b) => (a -> b) -> [a] -> [a]
+argmins f = throwNull "argmins"
+          $ _argmaxesBy (flip compare) f
 
 
--- | Returns the element of the list which minimizes the function,
--- or @Nothing@ if the list was empty.
-{-
-{-# SPECIALIZE argmin :: (a -> Int)     -> [a] -> Maybe a #-}
-{-# SPECIALIZE argmin :: (a -> Integer) -> [a] -> Maybe a #-}
-{-# SPECIALIZE argmin :: (a -> Float)   -> [a] -> Maybe a #-}
-{-# SPECIALIZE argmin :: (a -> Double)  -> [a] -> Maybe a #-}
--}
-argmin                :: (Ord b) => (a -> b) -> [a] -> Maybe a
-argmin _ []       = Nothing
-argmin f xs@(_:_) = Just (argmin' f xs)
+-- | Return an element of the list which minimizes the function,
+-- and return the value of the function at that element as well.
+argminWithMin   :: (Ord b) => (a -> b) -> [a] -> (a, b)
+argminWithMin  f = throwNull "argminWithMin"
+                 $ _argmaxWithMaxBy (<) f
+
+-- | Return all elements of the list which minimize the function,
+-- and return the value of the function at those elements as well.
+argminsWithMin  :: (Ord b) => (a -> b) -> [a] -> ([a], b)
+argminsWithMin f = throwNull "argminsWithMin"
+                 $ _argmaxesWithMaxBy (flip compare) f
 
 ----------------------------------------------------------------
 ----------------------------------------------------------- fin.
