@@ -2,7 +2,7 @@
 {-# OPTIONS_GHC -Wall -Werror #-}
 
 ----------------------------------------------------------------
---                                                  ~ 2008.07.11
+--                                                  ~ 2008.08.12
 -- |
 -- Module      :  Data.List.Extras.Pair
 -- Copyright   :  Copyright (c) 2007--2008 wren ng thornton
@@ -30,6 +30,15 @@ module Data.List.Extras.Pair
 
 ----------------------------------------------------------------
 ----------------------------------------------------------------
+-- TODO: benchmark fusion performance of:
+--
+--     foldr cons nil ... zipWith (,)
+--     zipWithBy (,) cons nil
+--
+-- ...That is, the latter is a manual fusion of the former, but
+-- does zip/zipWith have a special ability to fuse with the incoming
+-- lists? Or can foldr fuse with consumers in ways zipWithBy can't?
+
 -- | An unsafe variant of 'pairWithBy' to fill out the interface.
 zipWithBy :: (a -> b -> c)       -- tuple homomorphism
           -> (c -> d -> d) -> d  -- list  homomorphism
