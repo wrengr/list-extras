@@ -2,7 +2,7 @@
 {-# OPTIONS_GHC -Wall -Werror #-}
 
 ----------------------------------------------------------------
---                                                  ~ 2008.07.25
+--                                                  ~ 2008.08.17
 -- |
 -- Module      :  Data.List.Extras.ArgMax
 -- Copyright   :  Copyright (c) 2007--2008 wren ng thornton
@@ -49,9 +49,8 @@ catchNull f xs@(_:_) = Just (f xs)
 
 
 -- | Minimize the number of string literals
-{-# NOINLINE emptyListError #-}
 emptyListError    :: String -> a
-emptyListError fun = error $ "Data.List.Extras.ArgMax."++fun++": empty list"
+emptyListError fun = error $ "Data.List.Extras.Argmax."++fun++": empty list"
 
 
 -- | Apply a list function unsafely. For internal use.

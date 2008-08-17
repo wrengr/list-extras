@@ -1,8 +1,10 @@
 
 {-# OPTIONS_GHC -Wall -Werror #-}
+-- We need this in order to ensure the rules are picked up
+{-# OPTIONS_GHC -O2 -fglasgow-exts #-}
 
 ----------------------------------------------------------------
---                                                  ~ 2008.07.25
+--                                                  ~ 2008.08.17
 -- |
 -- Module      :  Data.List.Extras.LazyLength
 -- Copyright   :  Copyright (c) 2007--2008 wren ng thornton

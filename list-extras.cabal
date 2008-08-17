@@ -1,9 +1,9 @@
 ----------------------------------------------------------------
--- wren ng thornton <wren@cpan.org>                 ~ 2008.07.25
+-- wren ng thornton <wren@community.haskell.org>    ~ 2008.08.17
 ----------------------------------------------------------------
 
 Name:           list-extras
-Version:        0.2.0
+Version:        0.2.1
 Cabal-Version:  >= 1.2
 Build-Type:     Simple
 Stability:      stable
