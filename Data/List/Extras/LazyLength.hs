@@ -124,7 +124,7 @@ lengthCompare (_:xs) (_:ys) = lengthCompare xs ys
 "lengthCompare/(<)"  forall xs ys.
                             length xs <  length ys = lengthCompare xs ys == LT
 
-"lengthCompare/compare"  forall n xs.
+"lengthCompare/compare"  forall xs ys.
                          compare (length xs) (length ys) = lengthCompare xs ys
     #-}
 
