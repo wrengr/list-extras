@@ -1,5 +1,5 @@
 
-{-# OPTIONS_GHC -Wall -Werror #-}
+{-# OPTIONS_GHC -Wall -fwarn-tabs -Werror #-}
 -- We need this in order to ensure the rules are picked up
 {-# OPTIONS_GHC -O2 -fglasgow-exts #-}
 
