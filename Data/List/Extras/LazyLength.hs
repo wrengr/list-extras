@@ -1,10 +1,10 @@
 
-{-# OPTIONS_GHC -Wall -fwarn-tabs -Werror #-}
+{-# OPTIONS_GHC -Wall -fwarn-tabs -Werror -fno-warn-orphans #-}
 -- We need this in order to ensure the rules are picked up
 {-# OPTIONS_GHC -O2 -fglasgow-exts #-}
 
 ----------------------------------------------------------------
---                                                  ~ 2008.08.17
+--                                                  ~ 2008.08.23
 -- |
 -- Module      :  Data.List.Extras.LazyLength
 -- Copyright   :  Copyright (c) 2007--2008 wren ng thornton
