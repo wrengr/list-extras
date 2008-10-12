@@ -1,5 +1,5 @@
 
-{-# OPTIONS_GHC -Wall -fwarn-tabs -Werror #-}
+{-# OPTIONS_GHC -Wall -fwarn-tabs #-}
 
 ----------------------------------------------------------------
 --                                                  ~ 2008.07.20

@@ -1,5 +1,12 @@
 
-{-# OPTIONS_GHC -Wall -fwarn-tabs -Werror -fno-warn-orphans #-}
+-- 2008.10.12: GHC 6.10 breaks -fno-warn-orphans so that it no
+-- longer suppresses the warnings for orphaned RULES. Hence -Werror
+-- will make things crash on those systems, and even if that's
+-- removed then -Wall will send up too many false positives which
+-- may disconcert users. So now this file is now running without
+-- linting. Eheu!
+{-# OPTIONS_GHC -fwarn-tabs #-}
+
 -- We need this in order to ensure the rules are picked up
 {-# OPTIONS_GHC -O2 -fglasgow-exts #-}
 
