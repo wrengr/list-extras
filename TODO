@@ -1,0 +1,5 @@
+* Benchmark argmax vs decorate-foldl, with graphs in list length
+
+* Add tests
+
+* Remove LasyLength rules, with loud disclaimer.
