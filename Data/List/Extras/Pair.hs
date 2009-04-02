@@ -2,7 +2,7 @@
 {-# OPTIONS_GHC -Wall -fwarn-tabs #-}
 
 ----------------------------------------------------------------
---                                                  ~ 2008.08.12
+--                                                  ~ 2009.04.02
 -- |
 -- Module      :  Data.List.Extras.Pair
 -- Copyright   :  Copyright (c) 2007--2008 wren ng thornton
@@ -101,8 +101,8 @@ pairWith f = pairWithBy f (:) []
 
 
 -- | A safe version of 'zip' that uses a user-defined list homomorphism.
-pairBy :: ((a,b) -> m (a,b) -> m (a,b)) -> m (a,b)
-       -> [a] -> [b] -> Maybe (m (a,b))
+pairBy :: ((a,b) -> d -> d) -> d
+       -> [a] -> [b] -> Maybe d
 pairBy  = pairWithBy (,)
 
 
