@@ -2,6 +2,8 @@
     - Relaxed type for Data.List.Extras.Pair.pairBy
     - Removed rewrite rules for Data.List.Extras.LazyLength.*
 
+0.2.2.1 (2008-10-12):
+    - Now compiles under GHC 6.10
 0.2.1 (2008-08-17):
     - Rewrite rules for Data.List.Extras.LazyLength.* actually get picked up
 0.2.0 (2008-07-26):
