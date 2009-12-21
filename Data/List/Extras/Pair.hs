@@ -5,7 +5,7 @@
 --                                                  ~ 2009.04.02
 -- |
 -- Module      :  Data.List.Extras.Pair
--- Copyright   :  Copyright (c) 2007--2008 wren ng thornton
+-- Copyright   :  Copyright (c) 2007--2009 wren ng thornton
 -- License     :  BSD3
 -- Maintainer  :  wren@community.haskell.org
 -- Stability   :  stable
@@ -91,6 +91,8 @@ pairWithBy k f z xs' ys' = pairWB xs' ys' id
     pairWB (x:xs) (y:ys) cc = pairWB xs ys (cc . f (k x y))
     pairWB []     []     cc = Just (cc z)
     pairWB _      _      _  = Nothing
+
+-- TODO: we could make this more general still by fusing @f@ and @k@, which we'd often want to do anyways if we're using this full form.
 
 ----------------------------------------------------------------
 

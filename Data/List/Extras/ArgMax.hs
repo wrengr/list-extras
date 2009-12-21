@@ -5,7 +5,7 @@
 --                                                  ~ 2008.08.17
 -- |
 -- Module      :  Data.List.Extras.ArgMax
--- Copyright   :  Copyright (c) 2007--2008 wren ng thornton
+-- Copyright   :  Copyright (c) 2007--2009 wren ng thornton
 -- License     :  BSD3
 -- Maintainer  :  wren@community.haskell.org
 -- Stability   :  experimental
