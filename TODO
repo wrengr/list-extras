@@ -1,3 +1,5 @@
 * Benchmark argmax vs decorate-foldl, with graphs in list length
 
 * Add tests
+
+* add versions of ~/local/perl/List/EvenMoreUtils.pm's group_by and partition_into. Apparently these aren't out there yet (at least, not in Hoogle)
