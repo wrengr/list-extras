@@ -1,3 +1,6 @@
+0.4.0 (2010-04-XX):
+    - Added Data.List.Extras.list (by Tom Lokhorst)
+
 0.3.0 (2009-04-02):
     - Relaxed type for Data.List.Extras.Pair.pairBy
     - Removed rewrite rules for Data.List.Extras.LazyLength.*
