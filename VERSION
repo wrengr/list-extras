@@ -1,5 +1,6 @@
-0.4.0 (2010-04-XX):
+0.4.0 (2010-05-31):
     - Added Data.List.Extras.list (by Tom Lokhorst)
+    - Changed the type of Data.List.Extras.Pair.zipBy to be correct
 
 0.3.0 (2009-04-02):
     - Relaxed type for Data.List.Extras.Pair.pairBy
