@@ -2,7 +2,7 @@
 {-# OPTIONS_GHC -Wall -fwarn-tabs #-}
 
 ----------------------------------------------------------------
---                                                  ~ 2009.04.02
+--                                                  ~ 2010.05.31
 -- |
 -- Module      :  Data.List.Extras.Pair
 -- Copyright   :  Copyright (c) 2007--2009 wren ng thornton
@@ -51,8 +51,7 @@ zipWithBy k f z xs' ys' = zipWB xs' ys' id
 
 
 -- | A version of 'zip' that uses a user-defined list homomorphism.
-zipBy :: ((a,b) -> m (a,b) -> m (a,b)) -> m (a,b)
-      -> [a] -> [b] -> m (a,b)
+zipBy :: ((a,b) -> d -> d) -> d -> [a] -> [b] -> d
 zipBy  = zipWithBy (,)
 
 

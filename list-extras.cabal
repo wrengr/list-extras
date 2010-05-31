@@ -1,9 +1,9 @@
 ----------------------------------------------------------------
--- wren ng thornton <wren@community.haskell.org>    ~ 2009.04.02
+-- wren ng thornton <wren@community.haskell.org>    ~ 2010.05.31
 ----------------------------------------------------------------
 
 Name:           list-extras
-Version:        0.4.0
+Version:        0.5.0
 Cabal-Version:  >= 1.2
 Build-Type:     Simple
 Stability:      stable
@@ -26,13 +26,21 @@ Description:    Common not-so-common functions for lists.
                 maintain a separate package I can share the
                 @Data.List.Extras.Foo@ namespace.
 
+
+Flag preludeInBase
+    Description: base-4.0 deprecated Prelude which is imported qualified
+    Default:     False
+
 Library
     Exposed-Modules: Prelude.Listless
                    , Data.List.Extras
                    , Data.List.Extras.Argmax
                    , Data.List.Extras.LazyLength
                    , Data.List.Extras.Pair
-    Build-Depends:   base
+    if flag(preludeInBase)
+        Build-Depends: base >= 4
+    else
+        Build-Depends: base < 3
 
 ----------------------------------------------------------------
 ----------------------------------------------------------- fin.
