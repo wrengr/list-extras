@@ -3,7 +3,7 @@
 ----------------------------------------------------------------
 
 Name:           list-extras
-Version:        0.4.1
+Version:        0.4.0.1
 Cabal-Version:  >= 1.2
 Build-Type:     Simple
 Stability:      stable
@@ -27,9 +27,9 @@ Description:    Common not-so-common functions for lists.
                 @Data.List.Extras.Foo@ namespace.
 
 
-Flag preludeInBase
+Flag base4
     Description: base-4.0 deprecated Prelude which is imported qualified
-    Default:     False
+    Default:     True
 
 Library
     Exposed-Modules: Prelude.Listless
@@ -37,7 +37,7 @@ Library
                    , Data.List.Extras.Argmax
                    , Data.List.Extras.LazyLength
                    , Data.List.Extras.Pair
-    if flag(preludeInBase)
+    if flag(base4)
         -- TODO: What else do we need to do?
         Build-Depends: base >= 4
     else
