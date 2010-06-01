@@ -3,7 +3,7 @@
 ----------------------------------------------------------------
 
 Name:           list-extras
-Version:        0.4.0
+Version:        0.4.1
 Cabal-Version:  >= 1.2
 Build-Type:     Simple
 Stability:      stable
@@ -38,9 +38,11 @@ Library
                    , Data.List.Extras.LazyLength
                    , Data.List.Extras.Pair
     if flag(preludeInBase)
+        -- TODO: What else do we need to do?
         Build-Depends: base >= 4
     else
-        Build-Depends: base < 3
+        -- TODO: What else do we need to do?
+        Build-Depends: base < 4
 
 ----------------------------------------------------------------
 ----------------------------------------------------------- fin.
