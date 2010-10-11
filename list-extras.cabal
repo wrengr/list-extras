@@ -26,6 +26,10 @@ Description:    Common not-so-common functions for lists.
                 maintain a separate package I can share the
                 @Data.List.Extras.Foo@ namespace.
 
+Source-Repository head
+    Type:     darcs
+    Location: http://community.haskell.org/~wren/list-extras
+
 
 Flag base4
     Description: base-4.0 deprecated Prelude which is imported qualified
