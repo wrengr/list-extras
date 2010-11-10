@@ -1,10 +1,11 @@
 ----------------------------------------------------------------
--- wren ng thornton <wren@community.haskell.org>    ~ 2010.05.31
+-- wren ng thornton <wren@community.haskell.org>    ~ 2010.11.10
 ----------------------------------------------------------------
 
 Name:           list-extras
-Version:        0.4.0.1
-Cabal-Version:  >= 1.2
+Version:        0.4.0.2
+-- Source-Repository requires version 1.6
+Cabal-Version:  >= 1.6
 Build-Type:     Simple
 Stability:      stable
 Copyright:      Copyright (c) 2007--2010 wren ng thornton
@@ -30,11 +31,12 @@ Source-Repository head
     Type:     darcs
     Location: http://community.haskell.org/~wren/list-extras
 
-
+----------------------------------------------------------------
 Flag base4
     Description: base-4.0 deprecated Prelude which is imported qualified
     Default:     True
 
+----------------------------------------------------------------
 Library
     Exposed-Modules: Prelude.Listless
                    , Data.List.Extras

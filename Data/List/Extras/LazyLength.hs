@@ -6,8 +6,14 @@
 -- may disconcert users.
 {-# OPTIONS_GHC -Wall -fwarn-tabs #-}
 
--- We would need this in order to ensure the rules are parsed.
--- OPTIONS_GHC -O2 -fglasgow-exts
+-- Unfortunately GHC < 6.10 needs -fglasgow-exts in order to actually
+-- parse RULES (see -ddump-rules); the -frewrite-rules flag only
+-- enables the application of rules, instead of doing what we want.
+-- Apparently this is fixed in 6.10.
+--
+-- http://hackage.haskell.org/trac/ghc/ticket/2213
+-- http://www.mail-archive.com/glasgow-haskell-users@haskell.org/msg14313.html
+-- OPTIONS_GHC -O2 -fglasgow-exts -frewrite-rules
 
 ----------------------------------------------------------------
 --                                                  ~ 2009.04.02
