@@ -1,6 +1,4 @@
-
 {-# OPTIONS_GHC -Wall -fwarn-tabs #-}
-
 ----------------------------------------------------------------
 --                                                  ~ 2010.04.05
 -- |
@@ -33,7 +31,7 @@ import Data.List.Extras.Argmax
 -- the function is called with the head and tail of the list.
 list :: (a -> [a] -> b) -> b -> [a] -> b
 list _ z []     = z
-list f _ (x:xs) = f x xs 
+list f _ (x:xs) = f x xs
 
 ----------------------------------------------------------------
 ----------------------------------------------------------- fin.

@@ -1,11 +1,9 @@
-
 {-# OPTIONS_GHC -Wall -fwarn-tabs #-}
-
 ----------------------------------------------------------------
 --                                                  ~ 2008.07.20
 -- |
 -- Module      :  Prelude.Listless
--- Copyright   :  Copyright (c) 2007--2009 wren ng thornton
+-- Copyright   :  Copyright (c) 2007--2010 wren ng thornton
 -- License     :  BSD3
 -- Maintainer  :  wren@community.haskell.org
 -- Stability   :  stable
