@@ -41,8 +41,9 @@ module Data.List.Extras.Pair
 zipWithBy :: (a -> b -> c)       -- tuple homomorphism
           -> (c -> d -> d) -> d  -- list  homomorphism
           -> [a] -> [b] -> d     -- a @zip@ function
-
-zipWithBy k f z xs' ys' = zipWB xs' ys' id
+{-# INLINE zipWithBy #-}
+-- We use the explicit lambda in order to improve inlining in ghc-7.
+zipWithBy k f z = \xs ys -> zipWB xs ys id
     where
     zipWB (x:xs) (y:ys) cc = zipWB xs ys (cc . f (k x y))
     zipWB _      _      cc = cc z
@@ -50,7 +51,8 @@ zipWithBy k f z xs' ys' = zipWB xs' ys' id
 
 -- | A version of 'zip' that uses a user-defined list homomorphism.
 zipBy :: ((a,b) -> d -> d) -> d -> [a] -> [b] -> d
-zipBy  = zipWithBy (,)
+{-# INLINE zipBy #-}
+zipBy = zipWithBy (,)
 
 
 ----------------------------------------------------------------
@@ -75,8 +77,9 @@ pairWithBy :: (a -> b -> c)          -- @(,)@ tuple homomorphism
            -> (c -> d -> d)          -- @(:)@ list  homomorphism, pt. 1
            -> d                      -- @[]@  list  homomorphism, pt. 2
            -> [a] -> [b] -> Maybe d  -- a safer @zip@ function
-
-pairWithBy k f z xs' ys' = pairWB xs' ys' id
+{-# INLINE pairWithBy #-}
+-- We use the explicit lambda in order to improve inlining in ghc-7.
+pairWithBy k f z = \xs ys -> pairWB xs ys id
     where
     -- N.B. Strict accumulators are usually awesome, but don't
     -- even consider it when doing CPS! Making @cc@ strict degrades
@@ -94,20 +97,21 @@ pairWithBy k f z xs' ys' = pairWB xs' ys' id
 ----------------------------------------------------------------
 
 -- | A safe version of 'zipWith'.
-pairWith  :: (a -> b -> c)
-          -> [a] -> [b] -> Maybe [c]
+pairWith :: (a -> b -> c) -> [a] -> [b] -> Maybe [c]
+{-# INLINE pairWith #-}
 pairWith f = pairWithBy f (:) []
 
 
 -- | A safe version of 'zip' that uses a user-defined list homomorphism.
-pairBy :: ((a,b) -> d -> d) -> d
-       -> [a] -> [b] -> Maybe d
-pairBy  = pairWithBy (,)
+pairBy :: ((a,b) -> d -> d) -> d -> [a] -> [b] -> Maybe d
+{-# INLINE pairBy #-}
+pairBy = pairWithBy (,)
 
 
 -- | A safe version of 'zip'.
 pair :: [a] -> [b] -> Maybe [(a,b)]
-pair  = pairBy (:) []
+{-# INLINE pair #-}
+pair = pairWithBy (,) (:) []
 
 
 ----------------------------------------------------------------
@@ -117,14 +121,16 @@ pair  = pairBy (:) []
 -- | A bijection from a list of functions and a list of arguments
 -- to a list of results of applying the functions bijectively.
 biject :: [a -> b] -> [a] -> Maybe [b]
-biject  = pairWith ($) -- 'id' also works
+{-# INLINE biject #-}
+biject = pairWith ($) -- 'id' also works
 
 
 -- | A version of 'biject' that applies functions strictly. N.B.
 -- the list is still lazily evaluated, this just makes the functions
 -- strict in their argument.
 biject' :: [a -> b] -> [a] -> Maybe [b]
-biject'  = pairWith ($!)
+{-# INLINE biject' #-}
+biject' = pairWith ($!)
 
 ----------------------------------------------------------------
 ----------------------------------------------------------- fin.

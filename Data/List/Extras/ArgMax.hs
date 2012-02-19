@@ -1,9 +1,9 @@
 {-# OPTIONS_GHC -Wall -fwarn-tabs #-}
 ----------------------------------------------------------------
---                                                  ~ 2008.08.17
+--                                                  ~ 2010.10.15
 -- |
 -- Module      :  Data.List.Extras.ArgMax
--- Copyright   :  Copyright (c) 2007--2009 wren ng thornton
+-- Copyright   :  Copyright (c) 2007--2010 wren ng thornton
 -- License     :  BSD3
 -- Maintainer  :  wren@community.haskell.org
 -- Stability   :  experimental
@@ -41,28 +41,39 @@ import Data.List (foldl')
 -- | Apply a list function safely, i.e. when the list is non-empty.
 -- All other functions will throw errors on empty lists, so use
 -- this to make your own safe variations.
-catchNull           :: ([a] -> b) -> ([a] -> Maybe b)
-catchNull _ []       = Nothing
-catchNull f xs@(_:_) = Just (f xs)
+catchNull :: ([a] -> b) -> ([a] -> Maybe b)
+{-# INLINE catchNull #-}
+-- We use the explicit lambda in order to improve inlining in ghc-7.
+catchNull f = \xs ->
+    case xs of
+    []  -> Nothing
+    _:_ -> Just (f xs)
 
 
 -- | Minimize the number of string literals
-emptyListError    :: String -> a
-emptyListError fun = error $ "Data.List.Extras.Argmax."++fun++": empty list"
+emptyListError :: String -> a
+{-# NOINLINE emptyListError #-}
+emptyListError fun =
+    error $ "Data.List.Extras.Argmax."++fun++": empty list"
 
 
 -- | Apply a list function unsafely. For internal use.
-{-# INLINE throwNull #-}
 throwNull :: String -> (a -> [a] -> b) -> ([a] -> b)
-throwNull fun _ []     = emptyListError fun
-throwNull _   f (x:xs) = f x xs
+{-# INLINE throwNull #-}
+-- We use the explicit lambda in order to improve inlining in ghc-7.
+throwNull fun f = \xs ->
+    case xs of
+    []    -> emptyListError fun
+    x:xs' -> f x xs'
 
 ----------------------------------------------------------------
 ----------------------------------------------------------------
 -- | Tail-recursive driver
-_argmaxWithMaxBy :: (b -> b -> Bool) -> (a -> b)
-                 -> a -> [a] -> (a,b)
-_argmaxWithMaxBy isBetterThan f x xs = foldl' cmp (x, f x) xs
+_argmaxWithMaxBy :: (b -> b -> Bool) -> (a -> b) -> a -> [a] -> (a,b)
+{-# INLINE _argmaxWithMaxBy #-}
+-- We use the explicit lambda in order to improve inlining in ghc-7.
+_argmaxWithMaxBy isBetterThan f =
+    \x xs -> foldl' cmp (x, f x) xs
     where
     cmp bfb@(_,fb) a =
         let  fa = f a in
@@ -71,10 +82,12 @@ _argmaxWithMaxBy isBetterThan f x xs = foldl' cmp (x, f x) xs
         else bfb
 
 
--- | Tail-recursive driver for all-variants
-_argmaxesWithMaxBy :: (b -> b -> Ordering) -> (a -> b)
-                   -> a -> [a] -> ([a],b)
-_argmaxesWithMaxBy isBetterEqualThan f x xs = foldl' cmp ([x], f x) xs
+-- | Tail-recursive driver
+_argmaxesWithMaxBy :: (b -> b -> Ordering) -> (a -> b) -> a -> [a] -> ([a],b)
+{-# INLINE _argmaxesWithMaxBy #-}
+-- We use the explicit lambda in order to improve inlining in ghc-7.
+_argmaxesWithMaxBy isBetterEqualThan f =
+    \x xs -> foldl' cmp ([x], f x) xs
     where
     cmp bsfb@(bs,fb) a =
         let  fa = f a in
@@ -83,14 +96,17 @@ _argmaxesWithMaxBy isBetterEqualThan f x xs = foldl' cmp ([x], f x) xs
              EQ -> (a:bs, fb)
              _  -> bsfb
 
-_argmaxBy         :: (b -> b -> Bool) -> (a -> b)
-                  -> a -> [a] -> a
-_argmaxBy k f x xs = fst (_argmaxWithMaxBy k f x xs)
+
+_argmaxBy :: (b -> b -> Bool) -> (a -> b) -> a -> [a] -> a
+{-# INLINE _argmaxBy #-}
+-- We use the point-free style in order to improve inlining in ghc-7.
+_argmaxBy k f = (fst .) . _argmaxWithMaxBy k f
 
 
-_argmaxesBy         :: (b -> b -> Ordering) -> (a -> b)
-                    -> a -> [a] -> [a]
-_argmaxesBy k f x xs = fst (_argmaxesWithMaxBy k f x xs)
+_argmaxesBy :: (b -> b -> Ordering) -> (a -> b) -> a -> [a] -> [a]
+{-# INLINE _argmaxesBy #-}
+-- We use the point-free style in order to improve inlining in ghc-7.
+_argmaxesBy k f = (fst .) . _argmaxesWithMaxBy k f
 
 ----------------------------------------------------------------
 ----------------------------------------------------------------

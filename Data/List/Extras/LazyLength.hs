@@ -80,6 +80,8 @@ lengthBound n cmp xs
     go n' (_:xs') = (go $! n'-1) xs'
 
 {- bad RULES
+-- The rules themselves are correct but they alter program semantics
+-- regarding bottoms, depending on whether they fire or not.
 
 "lengthBound/(>)"      forall n xs. n >  length xs = lengthBound n (>)  xs
 "lengthBound/(>=)"     forall n xs. n >= length xs = lengthBound n (>=) xs
@@ -119,6 +121,8 @@ lengthCompare (_:xs) (_:ys) = lengthCompare xs ys
 
 
 {- bad RULES
+-- The rules themselves are correct but they alter program semantics
+-- regarding bottoms, depending on whether they fire or not.
 
 "lengthCompare/(>)"  forall xs ys.
                             length xs >  length ys = lengthCompare xs ys == GT
