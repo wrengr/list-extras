@@ -16,7 +16,7 @@
 --                                                  ~ 2012.07.19
 -- |
 -- Module      :  Data.List.Church
--- Copyright   :  Copyright (c) 2010--2011 wren ng thornton
+-- Copyright   :  Copyright (c) 2010--2012 wren ng thornton
 -- License     :  BSD
 -- Maintainer  :  wren@community.haskell.org
 -- Stability   :  experimental
@@ -88,22 +88,27 @@ instance Functor ChurchList where
 
 ----------------------------------------------------------------
 
+-- | Return whether the list is empty.
+nullCL :: ChurchList a -> Bool
+nullCL xs = cataCL xs (\_ _ -> True) False
+
 -- | Return the first element in a stream, if any exists.
 headCL :: ChurchList a -> Maybe a
 headCL xs = cataCL xs (\hd _ -> Just hd) Nothing
 
-{-
--- BUG: less polymorphic than expected. Fixing that'll mean refolding the tail of the list.
 -- | Drop the first element in a stream, if any exists.
 tailCL :: ChurchList a -> Maybe (ChurchList a)
-tailCL xs = cataCL xs (\_ tl -> Just (CL tl)) Nothing
+tailCL xs
+    | nullCL ys = Nothing
+    | otherwise = Just ys
+    where
+    ys = drop1CL xs
 
--- BUG: less polymorphic than expected. Fixing that'll mean refolding the tail of the list.
 -- | Drop the first element in a stream.
 drop1CL :: ChurchList a -> ChurchList a
-drop1CL xs = cataCL xs (\_ tl -> CL tl) nilCL
--}
+drop1CL xs = fst $ cataCL xs (\x (_,ys) -> (ys, consCL x ys)) (nilCL,nilCL)
 
+-- | Drop the last element in a stream.
 init1CL :: ChurchList a -> ChurchList a
 init1CL xs = cataCL xs (\x tl k -> k (tl (consCL x))) (\_ -> nilCL) id
 
