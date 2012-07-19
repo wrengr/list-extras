@@ -13,10 +13,10 @@
 {-# OPTIONS_GHC -O2 -fglasgow-exts -frewrite-rules #-}
 
 ----------------------------------------------------------------
---                                                  ~ 2011.06.23
+--                                                  ~ 2012.07.19
 -- |
 -- Module      :  Data.List.Scott
--- Copyright   :  Copyright (c) 2010--2011 wren ng thornton
+-- Copyright   :  Copyright (c) 2010--2012 wren ng thornton
 -- License     :  BSD
 -- Maintainer  :  wren@community.haskell.org
 -- Stability   :  experimental
@@ -53,6 +53,7 @@ import qualified Prelude
 import Data.Or
 import Data.Foldable
 import Data.Traversable
+import Control.Applicative
 import Data.Monoid
 
 #ifdef __GLASGOW_HASKELL__
@@ -106,6 +107,15 @@ instance (Ord a) => Ord (ScottList a) where
 instance Functor ScottList where
     -- TODO: Is there a more efficient implementation?
     fmap f = foldrSL (consSL . f) nilSL
+
+instance Foldable ScottList where
+    foldr f z xs = caseSL xs z (\x xs' -> f x (foldr f z xs'))
+
+instance Traversable ScottList where
+    traverse f xs =
+        caseSL xs
+            (pure nilSL)
+            (\x xs' -> consSL <$> f x <*> traverse f xs')
 
 ----------------------------------------------------------------
 
