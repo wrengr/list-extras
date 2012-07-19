@@ -90,7 +90,7 @@ instance Functor ChurchList where
 
 -- | Return whether the list is empty.
 nullCL :: ChurchList a -> Bool
-nullCL xs = cataCL xs (\_ _ -> True) False
+nullCL xs = cataCL xs (\_ _ -> False) True
 
 -- | Return the first element in a stream, if any exists.
 headCL :: ChurchList a -> Maybe a
