@@ -25,6 +25,9 @@
 -- This module defines the Church encoding of lists. These are
 -- provided by numerous other libraries, but we offer it here for
 -- API similarity to "Data.List.Scott".
+--
+-- Functions marked as /O(L)/ are /O(1)/ in a lazy setting, but are
+-- /O(n)/ in an eager setting.
 ----------------------------------------------------------------
 module Data.List.Church where
 
@@ -46,22 +49,27 @@ import GHC.Exts (build)
 newtype ChurchList a =
     CL { cataCL :: forall r. (a -> r -> r) -> r -> r }
 
+-- | /O(1)/. The empty list.
 nilCL :: ChurchList a
 nilCL = CL $ \_c n -> n
 
+-- | /O(n)/. Add an element to the front of the list.
 consCL :: a -> ChurchList a -> ChurchList a
 consCL x xs = CL $ \c n -> c x (cataCL xs c n)
 
+-- | /O(n)/. The right fold eliminator.
 foldrCL :: (a -> b -> b) -> b -> ChurchList a -> b
 foldrCL c n = \xs -> cataCL xs c n
 
+-- | /O(n)/. Case analysis.
 caseCL :: ChurchList a -> b -> (a -> ChurchList a -> b) -> b
 caseCL xs n c =
     case churchToList xs of
     []    -> n
     x:xs' -> c x (churchFromList xs')
-    -- Ugh, this is the best we can do.
+    -- Ugh, is this is the best we can do?
 
+-- | /O(n)/. Convert to plain lists.
 churchToList :: ChurchList a -> [a]
 #ifdef __GLASGOW_HASKELL__
 churchToList xs = build (cataCL xs)
@@ -69,6 +77,7 @@ churchToList xs = build (cataCL xs)
 churchToList xs = cataCL xs (:) []
 #endif
 
+-- | /O(n)/. Convert from plain lists.
 churchFromList :: [a] -> ChurchList a
 churchFromList = Prelude.foldr consCL nilCL
 
@@ -88,15 +97,15 @@ instance Functor ChurchList where
 
 ----------------------------------------------------------------
 
--- | Return whether the list is empty.
+-- | /O(L)/. Return whether the list is empty.
 nullCL :: ChurchList a -> Bool
 nullCL xs = cataCL xs (\_ _ -> False) True
 
--- | Return the first element in a stream, if any exists.
+-- | /O(L)/. Return the first element in a list, if any exists.
 headCL :: ChurchList a -> Maybe a
 headCL xs = cataCL xs (\hd _ -> Just hd) Nothing
 
--- | Drop the first element in a stream, if any exists.
+-- | /O(n)/. Drop the first element in a list, if any exists.
 tailCL :: ChurchList a -> Maybe (ChurchList a)
 tailCL xs
     | nullCL ys = Nothing
@@ -104,14 +113,15 @@ tailCL xs
     where
     ys = drop1CL xs
 
--- | Drop the first element in a stream.
+-- | /O(n)/. Drop the first element in a list.
 drop1CL :: ChurchList a -> ChurchList a
 drop1CL xs = fst $ cataCL xs (\x (_,ys) -> (ys, consCL x ys)) (nilCL,nilCL)
 
--- | Drop the last element in a stream.
+-- | /O(n)/. Drop the last element in a list.
 init1CL :: ChurchList a -> ChurchList a
 init1CL xs = cataCL xs (\x tl k -> k (tl (consCL x))) (\_ -> nilCL) id
 
+-- | /O(n+m)/. Append two lists.
 appendCL :: ChurchList a -> ChurchList a -> ChurchList a
 appendCL xs ys = CL $ \c n -> cataCL xs c (cataCL ys c n)
 

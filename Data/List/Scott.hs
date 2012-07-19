@@ -131,12 +131,15 @@ tailSL xs = caseSL xs Nothing (\_ tl -> Just tl)
 drop1SL :: ScottList a -> ScottList a
 drop1SL xs = caseSL xs nilSL (\_ tl -> tl)
 
+-- | /O(n)/. The left fold eliminator.
 foldlSL :: (b -> a -> b) -> b -> ScottList a -> b
 foldlSL s n xs = caseSL xs n (\x xs' -> foldlSL s (s n x) xs')
 
+-- | /O(n)/. The strict left fold eliminator.
 foldl'SL :: (b -> a -> b) -> b -> ScottList a -> b
 foldl'SL s n xs = caseSL xs n (\x xs' -> (foldl'SL s $! s n x) xs')
 
+-- | /O(n)/. Append two lists.
 appendSL :: ScottList a -> ScottList a -> ScottList a
 appendSL xs ys = foldrSL consSL ys xs
     -- TODO: Is there a more efficient implementation?
@@ -173,7 +176,6 @@ bifoldlSL k z xs ys =
             (caseSL ys
                 (foldlSL (\z' x' -> k z' $ Fst x') (k z $ Fst x) xs')
                 (\y ys' -> bifoldlSL k (k z $ Both x y) xs' ys')))
-
 
 ----------------------------------------------------------------
 ----------------------------------------------------------- fin.
