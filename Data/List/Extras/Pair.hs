@@ -30,7 +30,7 @@ module Data.List.Extras.Pair
 ----------------------------------------------------------------
 -- TODO: benchmark fusion performance of:
 --
---     foldr cons nil ... zipWith (,)
+--     foldr cons nil .: zipWith (,)
 --     zipWithBy (,) cons nil
 --
 -- ...That is, the latter is a manual fusion of the former, but

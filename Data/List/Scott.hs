@@ -28,7 +28,13 @@
 -- encodings are /exact/; meaning that all operations on the encoding
 -- can be performed with the same complexity as on the data type
 -- (with a larger or smaller constant factor, depending on how
--- efficiently the compiler handles functions vs structures). And since the conversion from the Scott encoding to case-elimination form is immediate, using Scott encodings should facilitate fusion without special support for optimizing away allocations that will be immediately case-analyzed (only support for fusing and partially evaluating functions is necessary, and should already be available).
+-- efficiently the compiler handles functions vs structures). And
+-- since the conversion from the Scott encoding to case-elimination
+-- form is immediate, using Scott encodings should facilitate fusion
+-- without special support for optimizing away allocations that
+-- will be immediately case-analyzed (only support for fusing and
+-- partially evaluating functions is necessary, and should already
+-- be available).
 --
 -- Thus,
 -- Scott encodings provide an alternative to having case analysis
@@ -100,7 +106,7 @@ instance (Ord a) => Ord (ScottList a) where
 instance Functor ScottList where
     -- TODO: Is there a more efficient implementation?
     fmap f = foldrSL (consSL . f) nilSL
-    
+
 ----------------------------------------------------------------
 
 -- | /O(1)/. Return the first element in a stream, if any exists.

@@ -60,7 +60,7 @@ caseCL xs n c =
     case churchToList xs of
     []    -> n
     x:xs' -> c x (churchFromList xs')
-    -- TODO: Ugh, is this really the best we can do?
+    -- Ugh, this is the best we can do.
 
 churchToList :: ChurchList a -> [a]
 #ifdef __GLASGOW_HASKELL__
@@ -85,7 +85,7 @@ instance (Ord a) => Ord (ChurchList a) where
 
 instance Functor ChurchList where
     fmap f xs = CL $ \c n -> cataCL xs (c . f) n
-    
+
 ----------------------------------------------------------------
 
 -- | Return the first element in a stream, if any exists.
