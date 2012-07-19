@@ -27,7 +27,10 @@
 -- API similarity to "Data.List.Scott".
 --
 -- Functions marked as /O(L)/ are /O(1)/ in a lazy setting, but are
--- /O(n)/ in an eager setting.
+-- /O(n)/ in an eager setting. And functions marked /O(A)/ are
+-- amortized constant time in a lazy setting, but technically are
+-- linear time and most importantly will result in the loss of
+-- sharing.
 ----------------------------------------------------------------
 module Data.List.Church where
 
@@ -53,7 +56,7 @@ newtype ChurchList a =
 nilCL :: ChurchList a
 nilCL = CL $ \_c n -> n
 
--- | /O(n)/. Add an element to the front of the list.
+-- | /O(A)/. Add an element to the front of the list.
 consCL :: a -> ChurchList a -> ChurchList a
 consCL x xs = CL $ \c n -> c x (cataCL xs c n)
 
@@ -61,7 +64,7 @@ consCL x xs = CL $ \c n -> c x (cataCL xs c n)
 foldrCL :: (a -> b -> b) -> b -> ChurchList a -> b
 foldrCL c n = \xs -> cataCL xs c n
 
--- | /O(n)/. Case analysis.
+-- | /O(A)/. Case analysis.
 caseCL :: ChurchList a -> b -> (a -> ChurchList a -> b) -> b
 caseCL xs n c =
     case churchToList xs of
@@ -130,7 +133,6 @@ zipSL = zipWithSL (,)
 
 zipWithSL :: (a -> b -> c) -> ChurchList a -> ChurchList b -> ChurchList c
 zipWithSL xs ys = undefined
-
 
 ----------------------------------------------------------------
 ----------------------------------------------------------- fin.
