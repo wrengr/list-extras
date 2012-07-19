@@ -36,7 +36,7 @@ import Data.Traversable
 import Data.Monoid
 
 #ifdef __GLASGOW_HASKELL__
-import qualified GHC.Exts (build)
+import GHC.Exts (build)
 #endif
 ----------------------------------------------------------------
 ----------------------------------------------------------------

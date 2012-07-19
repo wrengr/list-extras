@@ -56,7 +56,7 @@ import Data.Traversable
 import Data.Monoid
 
 #ifdef __GLASGOW_HASKELL__
-import qualified GHC.Exts (build)
+import GHC.Exts (build)
 #endif
 ----------------------------------------------------------------
 ----------------------------------------------------------------
@@ -76,15 +76,15 @@ consSL x xs = SL $ \_n c -> c x xs
 
 -- | /O(n)/. The right fold eliminator.
 foldrSL :: (a -> b -> b) -> b -> ScottList a -> b
-foldrSL c n xs = caseSL xs n (\x xs' -> c x (foldrSL n c xs'))
+foldrSL c n xs = caseSL xs n (\x xs' -> c x (foldrSL c n xs'))
 {-# INLINE [0] foldrSL #-}
 
 -- | /O(n)/. Convert to plain lists.
 scottToList :: ScottList a -> [a]
 #ifdef __GLASGOW_HASKELL__
-scottToList = build scottFoldr
+scottToList xs = build (\c n -> foldrSL c n xs)
 #else
-scottToList = scottFoldr (:) []
+scottToList = foldrSL (:) []
 #endif
 
 -- | /O(n)/. Convert from plain lists.
@@ -147,7 +147,7 @@ bifoldrSL k z = go
         caseSL xs
             (caseSL ys
                 z
-                (\y ys' -> k (Snd y) (foldrSL (k . Snd) z ys'))
+                (\y ys' -> k (Snd y) (foldrSL (k . Snd) z ys')))
             (\x xs' ->
                 (caseSL ys
                     (k (Fst x) (foldrSL (k . Fst) z xs'))
