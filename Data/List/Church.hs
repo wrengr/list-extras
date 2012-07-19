@@ -13,7 +13,7 @@
 {-# OPTIONS_GHC -O2 -fglasgow-exts -frewrite-rules #-}
 
 ----------------------------------------------------------------
---                                                  ~ 2011.06.23
+--                                                  ~ 2012.07.19
 -- |
 -- Module      :  Data.List.Church
 -- Copyright   :  Copyright (c) 2010--2011 wren ng thornton
@@ -104,8 +104,11 @@ drop1CL :: ChurchList a -> ChurchList a
 drop1CL xs = cataCL xs (\_ tl -> CL tl) nilCL
 -}
 
-appendSL :: ChurchList a -> ChurchList a -> ChurchList a
-appendSL xs ys = CL $ \c n -> cataCL xs c (cataCL ys c n)
+init1CL :: ChurchList a -> ChurchList a
+init1CL xs = cataCL xs (\x tl k -> k (tl (consCL x))) (\_ -> nilCL) id
+
+appendCL :: ChurchList a -> ChurchList a -> ChurchList a
+appendCL xs ys = CL $ \c n -> cataCL xs c (cataCL ys c n)
 
 zipSL :: ChurchList a -> ChurchList b -> ChurchList (a,b)
 zipSL = zipWithSL (,)
