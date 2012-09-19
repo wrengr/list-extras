@@ -44,7 +44,7 @@ Flag base4
 ----------------------------------------------------------------
 Library
     Exposed-Modules: Prelude.Listless
-                   -- , Data.List.Church
+                   -- , Data.List.BoehmBerarducci
                    -- , Data.List.Scott
                    , Data.List.Extras
                    , Data.List.Extras.Argmax
