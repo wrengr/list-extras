@@ -49,7 +49,8 @@ import GHC.Exts (build)
 ----------------------------------------------------------------
 ----------------------------------------------------------------
 
--- | A Boehm--Berarducci-encoded list. The Boehm--Berarducci encoding of a datatype is its catamorphic elimination.
+-- | A Boehm--Berarducci-encoded list. The Boehm--Berarducci encoding
+-- of a datatype is its catamorphic elimination.
 newtype BoehmBerarducciList a =
     BBL { cataBBL :: forall r. (a -> r -> r) -> r -> r }
 
