@@ -31,6 +31,10 @@
 -- Implementations of functions not in "Data.List.Scott" were taken
 -- from <http://okmij.org/ftp/Algorithms.html#zip-folds>
 --
+--     * Alessandro Berarducci and Corrado B&#246;hm (1985)
+--         /Automatic Synthesis of Typed Lambda-Programs on Term Algebras/,
+--         Theoretical Computer Science 39, pp.135--154.
+--
 -- Functions marked as /O(L)/ are /O(1)/ in a lazy setting, but are
 -- /O(n)/ in an eager setting. And functions marked /O(S)/ are
 -- linear time, but more importantly will result in the loss of
