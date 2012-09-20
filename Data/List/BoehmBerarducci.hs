@@ -27,7 +27,9 @@
 -- here for API similarity to "Data.List.Scott". This encoding is
 -- often confused with the Church encoding; for more discussion on
 -- the differences between this encoding and Church encoding, see
--- <http://okmij.org/ftp/tagless-final/course/Boehm-Berarducci.html>
+-- <http://okmij.org/ftp/tagless-final/course/Boehm-Berarducci.html>.
+-- Implementations of functions not in "Data.List.Scott" were taken
+-- from <http://okmij.org/ftp/Algorithms.html#zip-folds>
 --
 -- Functions marked as /O(L)/ are /O(1)/ in a lazy setting, but are
 -- /O(n)/ in an eager setting. And functions marked /O(S)/ are
@@ -149,8 +151,50 @@ zipBBL :: BoehmBerarducciList a -> BoehmBerarducciList b -> BoehmBerarducciList 
 zipBBL = zipWithBBL (,)
 
 
+----------------------------------------------------------------
+-- <http://okmij.org/ftp/Haskell/zip-folds.lhs>
+
 zipWithBBL :: (a -> b -> c) -> BoehmBerarducciList a -> BoehmBerarducciList b -> BoehmBerarducciList c
-zipWithBBL xs ys = undefined
+zipWithBBL f xs ys =
+    BBL $ \c n -> 
+        cataBBL xs
+            (\x r xs' -> cataBBL xs' (\y _ -> c (f x y) (r (drop1BBL xs'))) n)
+            (const n) ys
+
+
+filterBBL :: (a -> Bool) -> BoehmBerarducciList a -> BoehmBerarducciList a
+filterBBL p xs =
+    BBL $ \c -> cataBBL xs (\x r -> if p x then c x r else r)
+
+
+takeWhileBBL :: (a -> Bool) -> BoehmBerarducciList a -> BoehmBerarducciList a
+takeWhileBBL p xs =
+    BBL $ \c n -> cataBBL xs (\x r -> if p x then c x r else n) n
+
+
+takeBBL :: (Ord n, Num n) => n -> BoehmBerarducciList a -> BoehmBerarducciList a
+takeBBL n xs =
+    BBL $ \c z -> cataBBL xs
+        (\x r n' -> if n' <= 0 then z else c x (r (n'-1)))
+        (const z) n
+
+
+-- /O(n)/.
+dropBBL :: (Ord n, Num n) => n -> BoehmBerarducciList a -> BoehmBerarducciList a
+dropBBL n xs = 
+    BBL $ \c z -> cataBBL xs
+        (\x r n' -> if n' <= 0 then c x (r n') else r (n'-1))
+        (const z) n
+
+
+dropWhileBBL :: (a -> Bool) -> BoehmBerarducciList a -> BoehmBerarducciList a
+dropWhileBBL p xs =
+    BBL $ \c n -> cataBBL xs
+        (\x r done ->
+            if done then c x (r done)
+            else if p x then r done
+            else c x (r True))
+        (const n) False
 
 ----------------------------------------------------------------
 ----------------------------------------------------------- fin.
