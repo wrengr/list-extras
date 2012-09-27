@@ -3,7 +3,7 @@
 --                                                  ~ 2010.11.15
 -- |
 -- Module      :  Data.List.Extras.Pair
--- Copyright   :  Copyright (c) 2007--2010 wren ng thornton
+-- Copyright   :  Copyright (c) 2007--2012 wren ng thornton
 -- License     :  BSD3
 -- Maintainer  :  wren@community.haskell.org
 -- Stability   :  stable

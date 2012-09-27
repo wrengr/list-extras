@@ -1,17 +1,21 @@
 {-# OPTIONS_GHC -Wall -fwarn-tabs #-}
+{-# LANGUAGE CPP #-}
 ----------------------------------------------------------------
---                                                  ~ 2008.07.20
+--                                                  ~ 2012.09.26
 -- |
 -- Module      :  Prelude.Listless
--- Copyright   :  Copyright (c) 2007--2010 wren ng thornton
+-- Copyright   :  Copyright (c) 2007--2012 wren ng thornton
 -- License     :  BSD3
 -- Maintainer  :  wren@community.haskell.org
 -- Stability   :  stable
--- Portability :  portable
+-- Portability :  portable (+CPP)
 --
 -- This module provides the "Prelude" but removing all the list
 -- functions. This is helpful for modules that overload those
--- function names to work for other types.
+-- function names to work for other types. Note that on GHC 7.6 and
+-- above @catch@ is no longer exported from the Prelude, and also
+-- not re-exported from here; whereas, on earlier versions of GHC
+-- (and non-GHC compilers) we still re-export it.
 --
 -- Be sure to disable the implicit importing of the prelude when
 -- you import this one (by passing @-fno-implicit-prelude@ for GHC,
@@ -28,7 +32,10 @@ module Prelude.Listless
     Fractional(..), Functor(..), IO, IOError, Int, Integer,
     Integral(..), Maybe(..), Monad(..), Num(..), Ord(..), Ordering(..),
     Rational, Read(..), ReadS, Real(..), RealFloat(..), RealFrac(..),
-    Show(..), ShowS, String, (^), (^^), appendFile, asTypeOf, catch,
+    Show(..), ShowS, String, (^), (^^), appendFile, asTypeOf,
+#if __GLASGOW_HASKELL__ <= 706
+    catch,
+#endif
     const, curry, either, error, even, flip, fromIntegral, fst,
     gcd, getChar, getContents, getLine, id, interact, ioError, lcm,
     lex, maybe, not, odd, otherwise, print, putChar, putStr, putStrLn,
