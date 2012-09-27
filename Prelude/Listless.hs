@@ -8,7 +8,7 @@
 -- License     :  BSD3
 -- Maintainer  :  wren@community.haskell.org
 -- Stability   :  stable
--- Portability :  portable (+CPP)
+-- Portability :  Haskell98 (+CPP)
 --
 -- This module provides the "Prelude" but removing all the list
 -- functions. This is helpful for modules that overload those

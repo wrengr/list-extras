@@ -7,7 +7,7 @@
 -- License     :  BSD3
 -- Maintainer  :  wren@community.haskell.org
 -- Stability   :  experimental
--- Portability :  portable
+-- Portability :  Haskell98
 --
 -- This module provides variants of the 'maximum' and 'minimum'
 -- functions which return the elements for which some function is

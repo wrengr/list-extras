@@ -7,7 +7,7 @@
 -- License     :  BSD3
 -- Maintainer  :  wren@community.haskell.org
 -- Stability   :  stable
--- Portability :  portable
+-- Portability :  Haskell98
 --
 -- This module provides a single header for all @Data.List.Extras.*@
 -- modules and provides a small number of other utility functions.

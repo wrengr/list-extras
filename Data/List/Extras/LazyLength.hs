@@ -23,7 +23,7 @@
 -- License     :  BSD3
 -- Maintainer  :  wren@community.haskell.org
 -- Stability   :  stable
--- Portability :  portable
+-- Portability :  Haskell98
 --
 -- This module provides least-strict functions for getting a list's
 -- length and doing natural things with it.

@@ -7,7 +7,7 @@
 -- License     :  BSD3
 -- Maintainer  :  wren@community.haskell.org
 -- Stability   :  stable
--- Portability :  portable
+-- Portability :  Haskell98
 --
 -- This module provides safe zipping functions which will fail
 -- (return 'Nothing') on uneven length lists.
