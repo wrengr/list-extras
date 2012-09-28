@@ -33,7 +33,7 @@ module Prelude.Listless
     Integral(..), Maybe(..), Monad(..), Num(..), Ord(..), Ordering(..),
     Rational, Read(..), ReadS, Real(..), RealFloat(..), RealFrac(..),
     Show(..), ShowS, String, (^), (^^), appendFile, asTypeOf,
-#if __GLASGOW_HASKELL__ <= 706
+#if __GLASGOW_HASKELL__ < 706
     catch,
 #endif
     const, curry, either, error, even, flip, fromIntegral, fst,
