@@ -1,5 +1,5 @@
 ----------------------------------------------------------------
--- wren ng thornton <wren@community.haskell.org>    ~ 2014.03.07
+-- wren ng thornton <wren@community.haskell.org>    ~ 2014.03.30
 ----------------------------------------------------------------
 
 -- By and large Cabal >=1.2 is fine; but >= 1.6 gives tested-with:
@@ -8,7 +8,7 @@ Cabal-Version:  >= 1.6
 Build-Type:     Simple
 
 Name:           list-extras
-Version:        0.4.1.2
+Version:        0.4.1.3
 Stability:      stable
 Homepage:       http://code.haskell.org/~wren/
 Author:         wren ng thornton
@@ -31,7 +31,7 @@ Description:    Common not-so-common functions for lists.
                 @Data.List.Extras.Foo@ namespace.
 
 Tested-With:
-    GHC ==6.12.1, GHC ==7.6.1, GHC ==7.8.2
+    GHC ==6.12.1, GHC ==7.6.1, GHC ==7.8.0
 Extra-source-files:
     VERSION
 Source-Repository head
