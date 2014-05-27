@@ -4,7 +4,7 @@
 --                                                  ~ 2012.09.26
 -- |
 -- Module      :  Prelude.Listless
--- Copyright   :  Copyright (c) 2007--2012 wren ng thornton
+-- Copyright   :  Copyright (c) 2007--2012 wren gayle romano
 -- License     :  BSD3
 -- Maintainer  :  wren@community.haskell.org
 -- Stability   :  stable
