@@ -1,3 +1,5 @@
+0.4.1.4 (2015-05-30):
+    - Moved VERSION to CHANGELOG
 0.4.1 (2012-09-26):
     - Prelude.Listless: Guarded re-export of Prelude.catch with CPP
 0.4.0.1 (2010-05-31):
