@@ -19,7 +19,7 @@
 --                                                  ~ 2009.04.02
 -- |
 -- Module      :  Data.List.Extras.LazyLength
--- Copyright   :  Copyright (c) 2007--2012 wren gayle romano
+-- Copyright   :  Copyright (c) 2007--2015 wren gayle romano
 -- License     :  BSD3
 -- Maintainer  :  wren@community.haskell.org
 -- Stability   :  stable

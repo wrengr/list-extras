@@ -16,7 +16,7 @@
 --                                                  ~ 2012.09.19
 -- |
 -- Module      :  Data.List.BoehmBerarducci
--- Copyright   :  Copyright (c) 2010--2012 wren gayle romano
+-- Copyright   :  Copyright (c) 2010--2015 wren gayle romano
 -- License     :  BSD
 -- Maintainer  :  wren@community.haskell.org
 -- Stability   :  experimental

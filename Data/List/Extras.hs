@@ -3,7 +3,7 @@
 --                                                  ~ 2010.04.05
 -- |
 -- Module      :  Data.List.Extras
--- Copyright   :  Copyright (c) 2007--2012 wren gayle romano
+-- Copyright   :  Copyright (c) 2007--2015 wren gayle romano
 -- License     :  BSD3
 -- Maintainer  :  wren@community.haskell.org
 -- Stability   :  stable
