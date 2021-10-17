@@ -18,16 +18,16 @@ module Data.List.Extras.Argmax
     (
     -- * Utility functions
       catchNull
-    
+
     -- * Generic versions
     , argmaxBy, argmaxesBy, argmaxWithMaxBy, argmaxesWithMaxBy
-    
+
     -- * Maximum variations
     , argmax,   argmaxes,   argmaxWithMax,   argmaxesWithMax
-    
+
     -- * Minimum variations
     , argmin,   argmins,    argminWithMin,   argminsWithMin
-    
+
     {- TODO: CPS and monadic variants; argmax2, argmax3,... -}
     {- TODO: make sure argmax et al are "good consumers" for fusion -}
     ) where
@@ -133,7 +133,7 @@ argmaxesBy ord f = throwNull "argmaxesBy"
 -- according to a user-defined ordering, and return the value of
 -- the function at that element as well.
 argmaxWithMaxBy        :: (b -> b -> Ordering) -> (a -> b) -> [a] -> (a, b)
-argmaxWithMaxBy   ord f = throwNull "argmaxWithMaxBy" 
+argmaxWithMaxBy   ord f = throwNull "argmaxWithMaxBy"
                         $ _argmaxWithMaxBy (bool ord) f
 
 
@@ -165,7 +165,7 @@ argmaxes f = throwNull "argmaxes"
 -- | Return an element of the list which maximizes the function,
 -- and return the value of the function at that element as well.
 argmaxWithMax    :: (Ord b) => (a -> b) -> [a] -> (a, b)
-argmaxWithMax   f = throwNull "argmaxWithMax" 
+argmaxWithMax   f = throwNull "argmaxWithMax"
                   $ _argmaxWithMaxBy (>) f
 
 
