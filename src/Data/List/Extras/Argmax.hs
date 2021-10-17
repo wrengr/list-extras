@@ -2,7 +2,7 @@
 ----------------------------------------------------------------
 --                                                  ~ 2010.10.15
 -- |
--- Module      :  Data.List.Extras.ArgMax
+-- Module      :  Data.List.Extras.Argmax
 -- Copyright   :  Copyright (c) 2007--2015 wren gayle romano
 -- License     :  BSD3
 -- Maintainer  :  wren@community.haskell.org
