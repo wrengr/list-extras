@@ -7,7 +7,7 @@ Cabal-Version:  >= 1.10
 Build-Type:     Simple
 
 Name:           list-extras
-Version:        0.4.1.5
+Version:        0.4.1.6
 Stability:      stable
 Homepage:       https://wrengr.org/software/hackage.html
 Bug-Reports:    https://github.com/wrengr/list-extras/issues
