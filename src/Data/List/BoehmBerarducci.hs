@@ -13,12 +13,12 @@
 {-# OPTIONS_GHC -O2 -fglasgow-exts -frewrite-rules #-}
 
 ----------------------------------------------------------------
---                                                  ~ 2012.09.19
+--                                                  ~ 2021.10.17
 -- |
 -- Module      :  Data.List.BoehmBerarducci
--- Copyright   :  Copyright (c) 2010--2015 wren gayle romano
+-- Copyright   :  Copyright (c) 2010--2021 wren gayle romano
 -- License     :  BSD
--- Maintainer  :  wren@community.haskell.org
+-- Maintainer  :  wren@cpan.org
 -- Stability   :  experimental
 -- Portability :  semi-portable (CPP, Rank2Types)
 --
@@ -160,7 +160,7 @@ zipBBL = zipWithBBL (,)
 
 zipWithBBL :: (a -> b -> c) -> BoehmBerarducciList a -> BoehmBerarducciList b -> BoehmBerarducciList c
 zipWithBBL f xs ys =
-    BBL $ \c n -> 
+    BBL $ \c n ->
         cataBBL xs
             (\x r xs' -> cataBBL xs' (\y _ -> c (f x y) (r (drop1BBL xs'))) n)
             (const n) ys
@@ -185,7 +185,7 @@ takeBBL n xs =
 
 -- /O(n)/.
 dropBBL :: (Ord n, Num n) => n -> BoehmBerarducciList a -> BoehmBerarducciList a
-dropBBL n xs = 
+dropBBL n xs =
     BBL $ \c z -> cataBBL xs
         (\x r n' -> if n' <= 0 then c x (r n') else r (n'-1))
         (const z) n

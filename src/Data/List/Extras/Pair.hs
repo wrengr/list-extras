@@ -1,11 +1,11 @@
 {-# OPTIONS_GHC -Wall -fwarn-tabs #-}
 ----------------------------------------------------------------
---                                                  ~ 2010.11.15
+--                                                  ~ 2021.10.17
 -- |
 -- Module      :  Data.List.Extras.Pair
--- Copyright   :  Copyright (c) 2007--2015 wren gayle romano
+-- Copyright   :  Copyright (c) 2007--2021 wren gayle romano
 -- License     :  BSD3
--- Maintainer  :  wren@community.haskell.org
+-- Maintainer  :  wren@cpan.org
 -- Stability   :  stable
 -- Portability :  Haskell98
 --
@@ -17,10 +17,10 @@ module Data.List.Extras.Pair
     (
     -- * Safe functions for zipping lists
       pairWithBy, pairWith, pairBy, pair
-    
+
     -- * Special safe zipping functions
     , biject, biject'
-    
+
     -- * New (unsafe) zipping functions
     , zipWithBy, zipBy
     ) where
@@ -87,7 +87,7 @@ pairWithBy k f z = \xs ys -> pairWB xs ys id
     -- as much heap just to get to WHNF. After evaluating the spine
     -- of the resulting list from 'pair' that drops to +10% time
     -- and +25% heap, which is still much worse.
-    
+
     pairWB (x:xs) (y:ys) cc = pairWB xs ys (cc . f (k x y))
     pairWB []     []     cc = Just (cc z)
     pairWB _      _      _  = Nothing

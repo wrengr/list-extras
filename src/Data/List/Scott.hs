@@ -13,12 +13,12 @@
 {-# OPTIONS_GHC -O2 -fglasgow-exts -frewrite-rules #-}
 
 ----------------------------------------------------------------
---                                                  ~ 2012.07.19
+--                                                  ~ 2021.10.17
 -- |
 -- Module      :  Data.List.Scott
--- Copyright   :  Copyright (c) 2010--2015 wren gayle romano
+-- Copyright   :  Copyright (c) 2010--2021 wren gayle romano
 -- License     :  BSD
--- Maintainer  :  wren@community.haskell.org
+-- Maintainer  :  wren@cpan.org
 -- Stability   :  experimental
 -- Portability :  semi-portable (CPP, Rank2Types)
 --

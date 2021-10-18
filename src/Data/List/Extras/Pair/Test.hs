@@ -59,26 +59,26 @@ main :: IO ()
 main  = do
     putStrLn ""
     putStrLn (replicate 80 '~')
-    
+
     putStrLn "smallcheck{ type = [()]; depth = 50 }"
     SC.smallCheck 50 (prop_naivePair :: [()] -> [()] -> Bool)
     SC.smallCheck 50 (prop_WithVsBy  :: [()] -> [()] -> Bool)
     putStrLn ""
-    
+
     putStrLn "quickcheck{ type = [Int]; maxTest = 10000 }"
     QC.check (QC.defaultConfig { QC.configMaxTest = 10000 })
              (prop_naivePair :: [Int] -> [Int] -> Bool)
     QC.check (QC.defaultConfig { QC.configMaxTest = 10000 })
              (prop_WithVsBy  :: [Int] -> [Int] -> Bool)
     putStrLn ""
-    
+
     putStrLn "hunit{ millionEnum }"
     HU.runTestTT (HU.TestList
         [ HU.TestCase $ HU.assertBool ""
         $ prop_naivePair millionEnum millionEnum
         ])
     putStrLn ""
-    
+
     where
     millionEnum :: [Int]
     millionEnum  = [1..1000000]

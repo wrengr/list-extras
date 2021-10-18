@@ -1,12 +1,12 @@
 {-# OPTIONS_GHC -Wall -fwarn-tabs #-}
 {-# LANGUAGE CPP #-}
 ----------------------------------------------------------------
---                                                  ~ 2012.09.26
+--                                                  ~ 2021.10.17
 -- |
 -- Module      :  Prelude.Listless
--- Copyright   :  Copyright (c) 2007--2015 wren gayle romano
+-- Copyright   :  Copyright (c) 2007--2021 wren gayle romano
 -- License     :  BSD3
--- Maintainer  :  wren@community.haskell.org
+-- Maintainer  :  wren@cpan.org
 -- Stability   :  stable
 -- Portability :  Haskell98 (+CPP)
 --
@@ -42,7 +42,7 @@ module Prelude.Listless
     read, readFile, readIO, readLn, readParen, reads, realToFrac,
     seq, showChar, showParen, showString, shows, snd, subtract,
     uncurry, undefined, until, userError, writeFile, (||))
-    
+
     where
 
 import Prelude hiding

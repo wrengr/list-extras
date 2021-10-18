@@ -16,12 +16,12 @@
 -- OPTIONS_GHC -O2 -fglasgow-exts -frewrite-rules
 
 ----------------------------------------------------------------
---                                                  ~ 2009.04.02
+--                                                  ~ 2021.10.17
 -- |
 -- Module      :  Data.List.Extras.LazyLength
--- Copyright   :  Copyright (c) 2007--2015 wren gayle romano
+-- Copyright   :  Copyright (c) 2007--2021 wren gayle romano
 -- License     :  BSD3
--- Maintainer  :  wren@community.haskell.org
+-- Maintainer  :  wren@cpan.org
 -- Stability   :  stable
 -- Portability :  Haskell98
 --
