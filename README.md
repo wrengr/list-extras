@@ -1,8 +1,7 @@
 list-extras
 ===========
+[![CI Status](https://github.com/wrengr/list-extras/actions/workflows/ci.yml/badge.svg)](https://github.com/wrengr/list-extras/actions?query=workflow%3Aci+-event%3Apull_request)
 [![Hackage version](https://img.shields.io/hackage/v/list-extras.svg?style=flat)](https://hackage.haskell.org/package/list-extras)
-[![Build Status](https://github.com/wrengr/list-extras/workflows/ci/badge.svg)](https://github.com/wrengr/list-extras/actions?query=workflow%3Aci)
-[![Dependencies](https://img.shields.io/hackage-deps/v/list-extras.svg?style=flat)](http://packdeps.haskellers.com/specific?package=list-extras)
 
 The list-extras package provides a few common not-so-common functions
 for lists.
