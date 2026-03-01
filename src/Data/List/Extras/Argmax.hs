@@ -1,13 +1,14 @@
 {-# OPTIONS_GHC -Wall -fwarn-tabs #-}
+{-# LANGUAGE CPP #-}
 ----------------------------------------------------------------
---                                                  ~ 2021.10.17
+--                                                  ~ 2026-02-28
 -- |
 -- Module      :  Data.List.Extras.Argmax
--- Copyright   :  Copyright (c) 2007--2021 wren gayle romano
+-- Copyright   :  Copyright (c) 2007--2026 wren gayle romano
 -- License     :  BSD3
 -- Maintainer  :  wren@cpan.org
 -- Stability   :  experimental
--- Portability :  Haskell98
+-- Portability :  Haskell98 (+CPP)
 --
 -- This module provides variants of the 'maximum' and 'minimum'
 -- functions which return the elements for which some function is
@@ -33,7 +34,9 @@ module Data.List.Extras.Argmax
     ) where
 -- argmaxM       :: (Monad m, Ord b) => (a -> m b) -> [a] -> m (Maybe a)
 
+#if __GLASGOW_HASKELL__ < 910
 import Data.List (foldl')
+#endif
 
 ----------------------------------------------------------------
 ----------------------------------------------------------------
